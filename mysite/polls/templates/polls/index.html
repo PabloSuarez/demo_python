@@ -1,0 +1,25 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+
+<div class="container">
+	<h1> Questions list </h1>
+	{% if latest_question_list %}
+	    <ul>
+	    {% for question in latest_question_list %}
+	        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+	    {% endfor %}
+	    </ul>
+	{% else %}
+	    <p>No polls are available.</p>
+	{% endif %}
+</div>
+
+<div class="container">
+	<input id="btn_new_question" class="btn" type="button" value="Create a new Question" href="{% url 'polls:create' %}">
+	<script>
+		document.getElementById("btn_new_question").addEventListener("click", function(){
+		    window.location = "{% url 'polls:create' %}";
+		});
+	</script>
+</div>
