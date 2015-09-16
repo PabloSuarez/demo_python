@@ -104,6 +104,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ENGINE = 'django.db.backends.sqlite3'
-NAME = 'db.sqlite3'
-
