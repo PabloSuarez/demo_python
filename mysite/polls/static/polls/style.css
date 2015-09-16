@@ -1,7 +1,52 @@
+h1 {
+	color: #FFCA35;
+	text-shadow: 1px 1px #454648;
+	font-family: Verdana;
+	margin: 0px;
+	margin-bottom: 20px;
+}
+
 a {
 	color: green;
+	text-decoration: none; 
 }
 
 body {
-    background: white url("images/background.png") no-repeat center center;
+    background: #A0BAFF url("images/background.png") no-repeat center center;
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+	padding: 0;
+	margin: 10px 0;
+	list-style: none;
+}
+li {
+	margin: 5px 0;
+}
+
+label {
+	display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+
+.btn {
+	margin: 10px;
+	background-color: #274494;
+	padding: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: black solid 1px;
+	color: white;
+}
+.btn:hover {
+	border: #F5F7FA solid 1px;
+	transition: .5s;
+}
+
+.container {
+	padding: 0px;
+	margin: 10px;
 }

@@ -8,7 +8,6 @@ from django.utils import timezone
 from .models import Question, Choice
 
 
-
 class IndexView(generic.ListView):
 	template_name = 'polls/index.html'
 	context_object_name = 'latest_question_list'
@@ -23,11 +22,10 @@ class IndexView(generic.ListView):
 				).order_by('-pub_date')[:5]
 
 
-
-
 class DetailView(generic.DetailView):
 	model = Question
 	template_name = 'polls/detail.html'
+
 	def get_queryset(self):
 		"""
 			excludes questions that not are published yet
@@ -35,13 +33,13 @@ class DetailView(generic.DetailView):
 		return Question.objects.filter( pub_date__lte = timezone.now )
 
 
-
-
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
 
+def create(request):
+	return render(request, 'polls/create.html')
 
 
 def vote(request, question_id):
@@ -61,4 +59,3 @@ def vote(request, question_id):
 		# with POST data. This prevents data from being posted twice if a
 		# user hits the Back button.
 	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
-

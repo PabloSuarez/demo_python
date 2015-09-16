@@ -1,0 +1,20 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+
+<div class="container">
+	<h1>Create a new Question</h1>
+
+	<form>
+		<div class="input">
+			<label for="">Text:</label>
+			<input name="question_text" type="text">
+		</div>
+		<br>
+		<div class="input">
+			<label for="">Publish date:</label>
+			<input name="pub_date" type="text">
+		</div>
+	</form>
+	<input class="btn" type="submit" value="save">
+</div>
