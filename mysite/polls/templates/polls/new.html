@@ -17,22 +17,22 @@
 		<h2 class="subtitle">Question</h2>
 		<div class="field">
 			<label class="label">Description:</label>
-			<input id="question_text" name="question_text" type="text" value="{% if form.question_text.value != None %} {{form.question_text.value}} {% endif %}">
-			{{ form.question_text.errors }}
+			<input id="question_text" name="question_text" type="text" value="{% if form.question_text.value != None %}{{form.question_text.value}}{% endif %}">
+			<label class="error">{{ form.question_text.errors }}</label>
 		</div>
 		<div class="field">
 			<label class="label">Date: </label>
-			<input id="pub_date" name="pub_date" type="text" value="{% if form.pub_date.value != None %} {{form.pub_date.value}} {% endif %}">
-			{{ form.pub_date.errors }}
+			<input id="pub_date" name="pub_date" type="text" value="{% if form.pub_date.value != None %}{{form.pub_date.value}}{% endif %}">
+			<label class="error">{{ form.pub_date.errors }}</label>
 		</div>
 
-
-		<h2 class="subtitle">Choices</h2>
+		<h2 class="subtitle">Choices (choice1, choice2 ...)</h2>
 		<div class="field">
-			<label class="label">Description:</label>
-			<input id="choice_text" name="choice_text" type="text" value="{% if form.choice_text.value != None %} {{form.choice_text.value}} {% endif %}">
-			{{ form.choice_text.errors }}
+			<label class="label">List: </label>
+			<input id="choices" name="choices" type="text" value="">
+			<label class="error">{{ form.non_field_errors }}</label>
 		</div>
+
 		<input type="submit" value="Submit" class="btn">
 	</form>
 </div>

@@ -7,9 +7,10 @@ from django.utils import timezone
 
 from .models import Question, Choice
 
-from .forms import QuestionForm
+from .forms import QuestionForm, ChoiceForm
 
 from django.views.generic.edit import UpdateView
+
 
 class IndexView(generic.ListView):
 	template_name = 'polls/index.html'
@@ -37,8 +38,8 @@ class DetailView(generic.DetailView):
 
 
 class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
+	model = Question
+	template_name = 'polls/results.html'
 
 
 def vote(request, question_id):
@@ -62,10 +63,35 @@ def vote(request, question_id):
 
 def new(request):
 	if request.method == 'POST':
+		# además del form dinámico, recibo una lista de opciones a crear asociadas a la question.
+		# Lo primero es ver si existe la question.
+
 		form = QuestionForm(request.POST)
-		if form.is_valid():
-			form.save()
-			return HttpResponseRedirect(reverse('polls:index'))
+		# ahora creo los hijos.
+		votesValid = False
+		for i in request.POST['choices'].split(","):
+			if i:
+				votesValid = True
+				"""ch = Choice(
+						question = form.field.pk,
+						choice_text = i.strip(),
+						votes = 0,
+					)
+				"""
+		if not votesValid:
+			form.add_error(None, 'Insert valid Votes')
+			votesValid = False
+
+		if form.is_valid() and votesValid:
+			#Primero valido la lista recibida
+			q = form.save()
+			print q.pk
+		else:
+			if not votesValid:
+				form.add_error(None, 'Insert valid Votes')
+			return render(request, 'polls/new.html', {'form': form})
+
+		return HttpResponseRedirect(reverse('polls:index'))
 	# if a GET (or any other method) we'll create a blank form
 	else:
 		form = QuestionForm()
@@ -76,8 +102,8 @@ class UpdateView(UpdateView):
 	model = Question
 	fields = ["question_text"]
 	template_name = 'polls/update.html'
-	# success_url = reverse_lazy('polls:detail', args=(object.id,))
 
 	def post(self, *args, **kwargs):
 		self.success_url = reverse_lazy('polls:detail', args=(kwargs['pk'],))
 		return super(UpdateView, self).post(*args, **kwargs)
+

@@ -1,6 +1,7 @@
 input {
 	border-radius: 3px;
 	border: white solid;
+	padding: 0 5px;
 }
 
 form {
@@ -79,4 +80,9 @@ li {
 	background-color: #1E1D6E;
 	margin: 0;
 	padding: 0;
+}
+
+.error {
+	color: #861515;
+	text-align: right;
 }
