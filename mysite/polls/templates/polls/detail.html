@@ -11,3 +11,5 @@
 	{% endfor %}
 	<input type="submit" value="Vote" />
 </form>
+
+<a class="btn" href="{% url 'polls:update' question.id %}">update</a>

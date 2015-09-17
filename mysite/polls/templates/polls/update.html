@@ -7,7 +7,7 @@
 
 
 <div class="header">
-	<h1>new Question</h1>
+	<h1>update Question </h1>
 </div>
 
 <div class="container">
@@ -19,12 +19,6 @@
 			<input id="question_text" name="question_text" type="text" value="{% if form.question_text.value != None %} {{form.question_text.value}} {% endif %}">
 			{{ form.question_text.errors }}
 		</div>
-		<div class="field">
-			<label class="label">Date: </label>
-			<input id="pub_date" name="pub_date" type="text" value="{% if form.pub_date.value != None %} {{form.pub_date.value}} {% endif %}">
-			{{ form.pub_date.errors }}
-		</div>
-
 		<input type="submit" value="Submit" class="btn">
 	</form>
 </div>

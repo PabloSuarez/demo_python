@@ -9,6 +9,7 @@ from .models import Question, Choice
 
 from .forms import QuestionForm
 
+from django.views.generic.edit import UpdateView
 
 class IndexView(generic.ListView):
 	template_name = 'polls/index.html'
@@ -63,18 +64,15 @@ def new(request):
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			print "SI ES válido !! "
-			question = Question(
-				question_text=form.cleaned_data['question_text'],
-				pub_date=form.cleaned_data['pub_date'],
-			)
-			question.save()
+			form.save()
 			return HttpResponseRedirect(reverse('polls:index'))
-		else:
-			print "-- >> NO es VALIDO"
 	# if a GET (or any other method) we'll create a blank form
 	else:
-		print "NO ES UN ( POST )"
 		form = QuestionForm()
 	return render(request, 'polls/new.html', {'form': form})
 
+
+class UpdateView(UpdateView):
+	model = Question
+	fields = ["question_text"]
+	template_name = 'polls/update.html'
