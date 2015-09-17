@@ -16,10 +16,10 @@
 </div>
 
 <div class="container">
-	<input id="btn_new_question" class="btn" type="button" value="Create a new Question" href="{% url 'polls:create' %}">
+	<input id="btn_new_question" class="btn" type="button" value="Create a new Question">
 	<script>
 		document.getElementById("btn_new_question").addEventListener("click", function(){
-		    window.location = "{% url 'polls:create' %}";
+		    window.location = "{% url 'polls:new' %}";
 		});
 	</script>
 </div>

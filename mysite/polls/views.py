@@ -7,6 +7,8 @@ from django.utils import timezone
 
 from .models import Question, Choice
 
+from .forms import QuestionForm
+
 
 class IndexView(generic.ListView):
 	template_name = 'polls/index.html'
@@ -38,10 +40,6 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 
-def create(request):
-	return render(request, 'polls/create.html')
-
-
 def vote(request, question_id):
 	p = get_object_or_404(Question, pk=question_id)
 	try:
@@ -59,3 +57,24 @@ def vote(request, question_id):
 		# with POST data. This prevents data from being posted twice if a
 		# user hits the Back button.
 	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+
+
+def new(request):
+	if request.method == 'POST':
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			print "SI ES válido !! "
+			question = Question(
+				question_text=form.cleaned_data['question_text'],
+				pub_date=form.cleaned_data['pub_date'],
+			)
+			question.save()
+			return HttpResponseRedirect(reverse('polls:index'))
+		else:
+			print "-- >> NO es VALIDO"
+	# if a GET (or any other method) we'll create a blank form
+	else:
+		print "NO ES UN ( POST )"
+		form = QuestionForm()
+	return render(request, 'polls/new.html', {'form': form})
+
