@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django.utils import timezone
 
@@ -76,3 +76,8 @@ class UpdateView(UpdateView):
 	model = Question
 	fields = ["question_text"]
 	template_name = 'polls/update.html'
+	# success_url = reverse_lazy('polls:detail', args=(object.id,))
+
+	def post(self, *args, **kwargs):
+		self.success_url = reverse_lazy('polls:detail', args=(kwargs['pk'],))
+		return super(UpdateView, self).post(*args, **kwargs)
