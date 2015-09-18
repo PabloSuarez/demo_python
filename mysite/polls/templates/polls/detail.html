@@ -1,15 +1,28 @@
-<h1>{{ question.question_text }}</h1>
+{% extends "polls/base.html" %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block header_title %}{{question.question_text}}{% endblock %}
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
-	{% csrf_token %}
+{% block content %}
 
-	{% for choice in question.choice_set.all %}
-	    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-	    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
-	{% endfor %}
-	<input type="submit" value="Vote" />
-</form>
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<a class="btn" href="{% url 'polls:update' question.id %}">update</a>
+	<form action="{% url 'polls:vote' question.id %}" method="post">
+		{% csrf_token %}
+
+		<h2 class="subtitle">List of choices</h2>
+		{% for choice in question.choice_set.all %}
+			<div class="container">
+			    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" 
+			    	{% if forloop.counter == 1%}checked="checked"{% endif %}
+			    />
+			    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+		    </div>
+		{% endfor %}
+		<div class="container">
+			<input class="btn left" type="submit" value="Vote" />
+		</div>
+	</form>
+
+	<a class="btn" href="{% url 'polls:update' question.id %}">update</a>
+
+{% endblock %}
