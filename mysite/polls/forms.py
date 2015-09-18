@@ -5,6 +5,8 @@ class QuestionForm(forms.ModelForm):
 	class Meta:
 		model = Question
 		fields = "__all__"
+		exclude = ["votes",]
+
 
 class ChoiceForm(forms.ModelForm):
 	class Meta:

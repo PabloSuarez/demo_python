@@ -6,6 +6,10 @@ class ChoiceInline(admin.TabularInline):
 	model = Choice
 	extra = 3
 
+class ChoiceAdmin(admin.ModelAdmin):
+	fields = ['question_text', 'pub_date']
+
+
 class QuestionAdmin(admin.ModelAdmin):
 	fieldsets = [
 		(None,{'fields': ['question_text']}),
@@ -17,3 +21,5 @@ class QuestionAdmin(admin.ModelAdmin):
 	search_fields = ['question_text']
 
 admin.site.register(Question, QuestionAdmin)
+
+admin.site.register(Choice, ChoiceAdmin)

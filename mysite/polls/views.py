@@ -4,11 +4,10 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django.utils import timezone
+from django.forms.models import inlineformset_factory
 
 from .models import Question, Choice
-
-from .forms import QuestionForm, ChoiceForm
-
+from .forms import QuestionForm
 from django.views.generic.edit import UpdateView
 
 
@@ -61,43 +60,6 @@ def vote(request, question_id):
 	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
 
-def new(request):
-	if request.method == 'POST':
-		# además del form dinámico, recibo una lista de opciones a crear asociadas a la question.
-		# Lo primero es ver si existe la question.
-
-		form = QuestionForm(request.POST)
-		# ahora creo los hijos.
-		votesValid = False
-		for i in request.POST['choices'].split(","):
-			if i:
-				votesValid = True
-				"""ch = Choice(
-						question = form.field.pk,
-						choice_text = i.strip(),
-						votes = 0,
-					)
-				"""
-		if not votesValid:
-			form.add_error(None, 'Insert valid Votes')
-			votesValid = False
-
-		if form.is_valid() and votesValid:
-			#Primero valido la lista recibida
-			q = form.save()
-			print q.pk
-		else:
-			if not votesValid:
-				form.add_error(None, 'Insert valid Votes')
-			return render(request, 'polls/new.html', {'form': form})
-
-		return HttpResponseRedirect(reverse('polls:index'))
-	# if a GET (or any other method) we'll create a blank form
-	else:
-		form = QuestionForm()
-	return render(request, 'polls/new.html', {'form': form})
-
-
 class UpdateView(UpdateView):
 	model = Question
 	fields = ["question_text"]
@@ -107,3 +69,21 @@ class UpdateView(UpdateView):
 		self.success_url = reverse_lazy('polls:detail', args=(kwargs['pk'],))
 		return super(UpdateView, self).post(*args, **kwargs)
 
+
+def new(request):
+	question = Question()
+	ChoiceInlineFormSet = inlineformset_factory(Question, Choice, form=QuestionForm, extra=2, can_delete=False)
+
+	if request.method == 'POST':
+		questionForm = QuestionForm(request.POST, request.FILES, instance=question, prefix="main")
+		choiceInlineFormSet = ChoiceInlineFormSet(request.POST, request.FILES, instance=question, prefix="nested")
+
+		if questionForm.is_valid() and choiceInlineFormSet.is_valid():
+			questionForm.save()
+			choiceInlineFormSet.save()
+		else:
+			return render(request, 'polls/new.html', {'questionForm': questionForm, 'formset': choiceInlineFormSet})
+	else:
+		questionForm = QuestionForm(instance=question, prefix="main")
+		choiceInlineFormSet = ChoiceInlineFormSet(instance=question, prefix="nested")
+	return render(request, 'polls/new.html', {'questionForm': questionForm, 'formset': choiceInlineFormSet})
