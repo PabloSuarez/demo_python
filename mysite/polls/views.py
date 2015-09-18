@@ -8,7 +8,7 @@ from django.forms.models import inlineformset_factory
 
 from .models import Question, Choice
 from .forms import QuestionForm
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 
 
 class IndexView(generic.ListView):
@@ -87,3 +87,9 @@ def new(request):
 		questionForm = QuestionForm(instance=question, prefix="main")
 		choiceInlineFormSet = ChoiceInlineFormSet(instance=question, prefix="nested")
 	return render(request, 'polls/new.html', {'questionForm': questionForm, 'formset': choiceInlineFormSet})
+
+"""
+class DeleteView(DeleteView):
+	model = Question()
+	success_url = reverse('polls:index', args=())
+"""
